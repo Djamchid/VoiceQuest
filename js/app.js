@@ -82,7 +82,7 @@ function initializeApp() {
     // Update all UI components
     updateDashboard();
     renderModules();
-    renderParcours();
+    renderParcoursGrid();
     updateProfile();
     updateDailyObjectives();
 
@@ -146,8 +146,8 @@ function updateRecentBadges() {
         return;
     }
 
-    // Show last 3 earned badges
-    earnedBadges.slice(-3).forEach(badge => {
+    // Show all earned badges
+    earnedBadges.forEach(badge => {
         const badgeEl = document.createElement('div');
         badgeEl.className = 'badge';
         badgeEl.innerHTML = `
@@ -254,6 +254,8 @@ function renderHistoryChart() {
  */
 function renderModules() {
     const grid = document.getElementById('modules-grid');
+    if (!grid) return;
+
     grid.innerHTML = '';
 
     const icons = {
@@ -276,6 +278,28 @@ function renderModules() {
             <p><small>${module.progress}% complété</small></p>
         `;
         card.addEventListener('click', () => showModuleExercises(key, appData));
+        grid.appendChild(card);
+    });
+}
+
+/**
+ * Render parcours grid
+ */
+function renderParcoursGrid() {
+    const grid = document.getElementById('parcours-grid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    Object.entries(parcours).forEach(([key, p]) => {
+        const card = document.createElement('div');
+        card.className = 'module-card';
+        card.innerHTML = `
+            <h3>${p.name}</h3>
+            <p>${p.duration} min • ${p.difficulty}</p>
+            <p><small>⭐ ${p.xp} XP</small></p>
+        `;
+        card.addEventListener('click', () => showParcoursDetail(key));
         grid.appendChild(card);
     });
 }
@@ -317,5 +341,6 @@ window.showParcoursDetail = showParcoursDetail;
 window.startParcours = startParcours;
 window.cancelParcours = cancelParcours;
 window.updateDashboard = updateDashboard;
+window.updateDailyObjectives = updateDailyObjectives;
 window.updateProfile = updateProfile;
 window.appData = appData;
