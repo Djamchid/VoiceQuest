@@ -239,6 +239,7 @@ function completeExercise(actualDuration, actualReps = null) {
 
     // Update UI and save
     updateDashboard();
+    updateDailyObjectives();
     updateProfile();
     saveData(appData);
 

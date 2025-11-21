@@ -264,6 +264,9 @@ function onParcoursExerciseComplete(exercise, moduleName, actualDuration, actual
         parcours: currentParcours.name
     });
 
+    // Update objectives progress
+    updateObjectivesProgress(appData, moduleName, xpEarned);
+
     console.log(`✓ Étape ${currentParcours.currentStepIndex + 1} terminée: ${exercise.name} (+${xpEarned} XP)`);
 
     // Move to next step
@@ -356,33 +359,12 @@ function cancelParcours() {
 }
 
 /**
- * Render parcours grid
- */
-function renderParcours() {
-    const grid = document.getElementById('parcours-grid');
-    grid.innerHTML = '';
-
-    Object.entries(parcours).forEach(([key, p]) => {
-        const card = document.createElement('div');
-        card.className = 'module-card';
-        card.innerHTML = `
-            <h3>${p.name}</h3>
-            <p>${p.duration} min • ${p.difficulty}</p>
-            <p><small>⭐ ${p.xp} XP</small></p>
-        `;
-        card.addEventListener('click', () => showParcoursDetail(key));
-        grid.appendChild(card);
-    });
-}
-
-/**
  * Export for use in other modules
  */
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         showParcoursDetail,
         startParcours,
-        cancelParcours,
-        renderParcours
+        cancelParcours
     };
 }
